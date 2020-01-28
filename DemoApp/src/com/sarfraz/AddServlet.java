@@ -2,14 +2,18 @@ package com.sarfraz;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.ServletException;
+import java.net.HttpCookie;
 
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.RequestDispatcher;
 
-import org.apache.catalina.servlet4preview.RequestDispatcher;
-
+@WebServlet("/add")
 public class AddServlet extends HttpServlet
 {
 //	the service is a inbuilt thing there doGet, doPost which we can use so based on the form request
@@ -20,7 +24,8 @@ public class AddServlet extends HttpServlet
 		int j = Integer.parseInt(req.getParameter("num2"));
 		
 		int k = i + j;
-		k=k*k;
+		
+		
 //		in console 
 //		System.out.println("the result is " + k);
 		
@@ -31,8 +36,22 @@ public class AddServlet extends HttpServlet
 //		to call the SqServlet we can use two methods 
 //		1) Req Dispatcher
 //		2) redirect
-		RequestDispatcher rd = req.getRequestDispatcher("sq");
-		rd.forward(req, res);
 		
+//		#################Reqest Dispatcher##############
+//		req.setAttribute("k", k);
+//		RequestDispatcher rd = req.getRequestDispatcher("square");
+//		rd.forward(req, res);
+		
+//		#################Request Redirect#######################
+//		res.sendRedirect("square?k="+k);
+		
+//		#################session##############
+//		HttpSession session = req.getSession();
+//		session.setAttribute("k", k);
+		
+//		################cookies###############
+		Cookie cookie = new Cookie("k", k + ""); // k + '' - this converts to string
+		res.addCookie(cookie);
+		res.sendRedirect("square");	
 	}
 }
